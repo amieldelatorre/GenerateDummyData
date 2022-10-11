@@ -2,17 +2,55 @@ package org.randomobjects;
 
 import org.classes.*;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 public class GenerateRandom {
 
     public List<Weight> generateRandomWeights(String userEmail, int amount) {
         List<Weight> randomWeights = new ArrayList<Weight>();
 
+        Random random = new Random();
+
+        boolean weightIncreasing = random.nextBoolean();
+        double startingWeight = 40 + 60 * Math.random();
+
+        // Generate first weight
+        Weight firstWeight = new Weight();
+        firstWeight.setUserEmail(userEmail);
+        firstWeight.setPoundage(startingWeight);
+        firstWeight.setUnits(0);
+        LocalDate localDate = LocalDate.now(ZoneId.systemDefault()).minusDays(amount);
+        Date date = java.sql.Date.valueOf(localDate);
+        firstWeight.setDate(date);
+
+        randomWeights.add(firstWeight);
+        for (int i = 1; i < amount; i++)
+            randomWeights.add(generateRandomWeight(randomWeights.get(i-1).getPoundage(), weightIncreasing, userEmail, amount-i));
 
         return randomWeights;
+    }
+
+    public Weight generateRandomWeight(double previousWeight, boolean weightIncreasing, String userEmail, int toSubtractFromDate) {
+        Weight randomWeight = new Weight();
+        randomWeight.setUnits(0);
+        randomWeight.setUserEmail(userEmail);
+
+        double changeMagnitude = 0.5 * Math.random();
+        if (weightIncreasing)
+            randomWeight.setPoundage(previousWeight + changeMagnitude);
+        else
+            randomWeight.setPoundage(previousWeight - changeMagnitude);
+
+        LocalDate localDate = LocalDate.now(ZoneId.systemDefault()).minusDays(toSubtractFromDate);
+        Date date = java.sql.Date.valueOf(localDate);
+        randomWeight.setDate(date);
+
+        return randomWeight;
     }
 
     public List<User> generateRandomUsers(int amount) {
@@ -32,19 +70,6 @@ public class GenerateRandom {
         return randomUsers;
     }
 
-    public Weight generateRandomWeight(double startingWeight, boolean weightIncreasing, String userEmail) {
-        Weight randomWeight = new Weight();
-        randomWeight.setUnits(0);
-        randomWeight.setUserEmail(userEmail);
-
-        double changeMagnitude = 0.25 * Math.random();
-        if (weightIncreasing)
-            randomWeight.setPoundage(startingWeight + changeMagnitude);
-        else
-            randomWeight.setPoundage(startingWeight - changeMagnitude);
-
-        return randomWeight;
-    }
 
     public User generateRandomUser() {
         User randomUser = new User();
