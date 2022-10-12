@@ -1,5 +1,6 @@
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.classes.ResultingClass;
 import org.classes.User;
 import org.classes.Weight;
@@ -55,15 +56,15 @@ public class Main {
         List<Weight> flatWeightsList = generatedWeightsForEachUser.stream().flatMap(List::stream).toList();
 
         ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
         try {
             ResultingClass results = new ResultingClass();
             results.setUsers(generatedUsers);
             results.setWeights(flatWeightsList);
 
-            String jsonResults = mapper.writeValueAsString(results);
             String filename = "output.json";
 
-            mapper.writeValue(new File(strPath + "/" + filename), jsonResults);
+            mapper.writeValue(new File(strPath + "/" + filename), results);
         } catch (IOException e) {
             System.out.println("Error writing to file!");
             System.exit(1);
