@@ -1,5 +1,3 @@
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.classes.ResultingClass;
 import org.classes.User;
@@ -57,6 +55,7 @@ public class Main {
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
+        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         try {
             ResultingClass results = new ResultingClass();
             results.setUsers(generatedUsers);
@@ -67,6 +66,7 @@ public class Main {
             mapper.writeValue(new File(strPath + "/" + filename), results);
         } catch (IOException e) {
             System.out.println("Error writing to file!");
+            System.out.println(e.getMessage());
             System.exit(1);
         }
     }
