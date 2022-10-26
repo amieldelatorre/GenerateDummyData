@@ -21,7 +21,7 @@ public class GenerateRandom {
 
         // Generate first weight
         Weight firstWeight = new Weight();
-        firstWeight.setUserEmail(userEmail);
+        firstWeight.setEmail(userEmail);
         firstWeight.setPoundage(startingWeight);
         firstWeight.setUnits(0);
         LocalDate localDate = LocalDate.now(ZoneId.systemDefault()).minusDays(amount);
@@ -38,7 +38,7 @@ public class GenerateRandom {
     public Weight generateRandomWeight(double previousWeight, boolean weightIncreasing, String userEmail, int toSubtractFromDate) {
         Weight randomWeight = new Weight();
         randomWeight.setUnits(0);
-        randomWeight.setUserEmail(userEmail);
+        randomWeight.setEmail(userEmail);
 
         double changeMagnitude = 0.5 * Math.random();
         if (weightIncreasing)

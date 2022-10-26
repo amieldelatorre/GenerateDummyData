@@ -57,13 +57,12 @@ public class Main {
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         try {
-            ResultingClass results = new ResultingClass();
-            results.setUsers(generatedUsers);
-            results.setWeights(flatWeightsList);
+            String userFilename = "users.json";
+            String weightFilename = "weights.json";
 
-            String filename = "output.json";
+            mapper.writeValue(new File(strPath + "/" + userFilename), generatedUsers);
+            mapper.writeValue(new File(strPath + "/" + weightFilename), flatWeightsList);
 
-            mapper.writeValue(new File(strPath + "/" + filename), results);
         } catch (IOException e) {
             System.out.println("Error writing to file!");
             System.out.println(e.getMessage());
