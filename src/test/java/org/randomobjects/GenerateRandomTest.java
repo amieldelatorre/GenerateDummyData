@@ -1,6 +1,7 @@
 package org.randomobjects;
 
 import org.classes.User;
+import org.classes.Weight;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Array;
@@ -13,7 +14,12 @@ class GenerateRandomTest {
 
     @Test
     void generateRandomWeights() {
-        fail ("Not Implemented");
+        GenerateRandom random = new GenerateRandom();
+        User randomUser = random.generateRandomUser();
+        int numberOfWeights = 5;
+
+        List<Weight> randomWeightList = random.generateRandomWeights(randomUser.getEmail(), numberOfWeights);
+        assert (randomWeightList.size() == numberOfWeights);
     }
 
     @Test
